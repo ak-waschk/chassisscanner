@@ -1,7 +1,7 @@
 
 import React from "react";
 import { Stack, Link } from "expo-router";
-import { ScrollView, Pressable, StyleSheet, View, Text, Platform } from "react-native";
+import { ScrollView, Pressable, StyleSheet, View, Text, Platform, Image } from "react-native";
 import { IconSymbol } from "@/components/IconSymbol";
 import { GlassView } from "expo-glass-effect";
 import { useTheme } from "@react-navigation/native";
@@ -51,8 +51,12 @@ export default function HomeScreen() {
           showsVerticalScrollIndicator={false}
         >
           <View style={styles.heroSection}>
-            <View style={styles.iconContainer}>
-              <IconSymbol name="qrcode" size={80} color={colors.primary} />
+            <View style={styles.logoContainer}>
+              <Image
+                source={require('@/assets/images/32af286f-1d9f-4e23-a66b-df2a22a8530c.jpeg')}
+                style={styles.logo}
+                resizeMode="contain"
+              />
             </View>
             <Text style={styles.title}>QR Code Scanner</Text>
             <Text style={styles.subtitle}>
@@ -119,16 +123,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     marginBottom: 32,
   },
-  iconContainer: {
-    width: 120,
-    height: 120,
-    borderRadius: 60,
-    backgroundColor: colors.card,
+  logoContainer: {
+    width: 200,
+    height: 200,
     justifyContent: 'center',
     alignItems: 'center',
     marginBottom: 20,
-    boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.1)',
-    elevation: 4,
+  },
+  logo: {
+    width: '100%',
+    height: '100%',
   },
   title: {
     fontSize: 32,
