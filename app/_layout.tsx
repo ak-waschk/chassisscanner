@@ -1,3 +1,4 @@
+
 import "react-native-reanimated";
 import React, { useEffect } from "react";
 import { useFonts } from "expo-font";
@@ -33,6 +34,7 @@ export default function RootLayout() {
 
   useEffect(() => {
     if (loaded) {
+      console.log('Fonts loaded, hiding splash screen');
       SplashScreen.hideAsync();
     }
   }, [loaded]);
@@ -50,44 +52,57 @@ export default function RootLayout() {
   }, [networkState.isConnected, networkState.isInternetReachable]);
 
   if (!loaded) {
+    console.log('Fonts not loaded yet, showing null');
     return null;
   }
+
+  console.log('Rendering RootLayout with colorScheme:', colorScheme);
 
   const CustomDefaultTheme: Theme = {
     ...DefaultTheme,
     dark: false,
     colors: {
-      primary: "rgb(0, 122, 255)", // System Blue
-      background: "rgb(242, 242, 247)", // Light mode background
+      primary: "rgb(236, 109, 5)", // #ec6d05
+      background: "rgb(255, 255, 255)", // White background
       card: "rgb(255, 255, 255)", // White cards/surfaces
-      text: "rgb(0, 0, 0)", // Black text for light mode
+      text: "rgb(33, 33, 33)", // Dark text for light mode
       border: "rgb(216, 216, 220)", // Light gray for separators/borders
-      notification: "rgb(255, 59, 48)", // System Red
+      notification: "rgb(236, 109, 5)", // Primary color
     },
   };
 
   const CustomDarkTheme: Theme = {
     ...DarkTheme,
     colors: {
-      primary: "rgb(10, 132, 255)", // System Blue (Dark Mode)
-      background: "rgb(1, 1, 1)", // True black background for OLED displays
+      primary: "rgb(236, 109, 5)", // #ec6d05
+      background: "rgb(18, 18, 18)", // Dark background
       card: "rgb(28, 28, 30)", // Dark card/surface color
       text: "rgb(255, 255, 255)", // White text for dark mode
       border: "rgb(44, 44, 46)", // Dark gray for separators/borders
-      notification: "rgb(255, 69, 58)", // System Red (Dark Mode)
+      notification: "rgb(236, 109, 5)", // Primary color
     },
   };
+
   return (
     <>
       <StatusBar style="auto" animated />
-        <ThemeProvider
-          value={colorScheme === "dark" ? CustomDarkTheme : CustomDefaultTheme}
-        >
-          <WidgetProvider>
-            <GestureHandlerRootView>
-            <Stack>
+      <ThemeProvider
+        value={colorScheme === "dark" ? CustomDarkTheme : CustomDefaultTheme}
+      >
+        <WidgetProvider>
+          <GestureHandlerRootView style={{ flex: 1 }}>
+            <Stack screenOptions={{ headerShown: false }}>
               {/* Main app with tabs */}
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+
+              {/* QR Scanner Screen */}
+              <Stack.Screen 
+                name="qrscanner" 
+                options={{ 
+                  headerShown: false,
+                  presentation: 'card',
+                }} 
+              />
 
               {/* Modal Demo Screens */}
               <Stack.Screen
@@ -116,9 +131,9 @@ export default function RootLayout() {
               />
             </Stack>
             <SystemBars style={"auto"} />
-            </GestureHandlerRootView>
-          </WidgetProvider>
-        </ThemeProvider>
+          </GestureHandlerRootView>
+        </WidgetProvider>
+      </ThemeProvider>
     </>
   );
 }

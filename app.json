@@ -1,16 +1,17 @@
+
 {
   "expo": {
     "name": "A&K Chassis-Scanner",
     "slug": "A&K Chassis-Scanner",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/natively-dark.png",
+    "icon": "./assets/images/32af286f-1d9f-4e23-a66b-df2a22a8530c.jpeg",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/natively-dark.png",
+      "image": "./assets/images/32af286f-1d9f-4e23-a66b-df2a22a8530c.jpeg",
       "resizeMode": "contain",
-      "backgroundColor": "#000000"
+      "backgroundColor": "#FFFFFF"
     },
     "ios": {
       "supportsTablet": true,
@@ -21,14 +22,14 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/natively-dark.png",
-        "backgroundColor": "#000000"
+        "foregroundImage": "./assets/images/32af286f-1d9f-4e23-a66b-df2a22a8530c.jpeg",
+        "backgroundColor": "#FFFFFF"
       },
       "edgeToEdgeEnabled": true,
       "package": "com.anonymous.Natively"
     },
     "web": {
-      "favicon": "./assets/images/final_quest_240x240.png",
+      "favicon": "./assets/images/32af286f-1d9f-4e23-a66b-df2a22a8530c.jpeg",
       "bundler": "metro"
     },
     "plugins": [
