@@ -2,10 +2,10 @@
 import { StyleSheet, ViewStyle, TextStyle } from 'react-native';
 
 export const colors = {
-  background: '#F5F5F5',
+  background: '#FFFFFF',
   text: '#212121',
   textSecondary: '#757575',
-  primary: '#6200EE',
+  primary: '#ec6d05',
   secondary: '#03DAC5',
   accent: '#BB86FC',
   card: '#FFFFFF',
