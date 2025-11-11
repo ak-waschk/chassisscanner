@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, StyleSheet, Pressable, Alert, Platform } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { Stack, router } from 'expo-router';
-import * as Linking from 'expo-linking';
+import * as WebBrowser from 'expo-web-browser';
 import { IconSymbol } from '@/components/IconSymbol';
 import { colors } from '@/styles/commonStyles';
 
@@ -29,20 +29,23 @@ export default function QRScannerScreen() {
     const urlPattern = /^(https?:\/\/)/i;
     if (urlPattern.test(data)) {
       try {
-        const canOpen = await Linking.canOpenURL(data);
-        if (canOpen) {
-          console.log('Opening URL:', data);
-          await Linking.openURL(data);
-          
-          // Reset scanned state after a delay to allow scanning again
-          setTimeout(() => {
-            setScanned(false);
-          }, 2000);
-        } else {
-          Alert.alert('Invalid URL', 'Cannot open this URL', [
-            { text: 'OK', onPress: () => setScanned(false) }
-          ]);
-        }
+        console.log('Opening URL in app browser:', data);
+        
+        // Open URL in in-app browser instead of external browser
+        const result = await WebBrowser.openBrowserAsync(data, {
+          // iOS specific options
+          presentationStyle: WebBrowser.WebBrowserPresentationStyle.PAGE_SHEET,
+          controlsColor: colors.primary,
+          // Android specific options
+          toolbarColor: colors.primary,
+          enableBarCollapsing: true,
+          showTitle: true,
+        });
+        
+        console.log('Browser result:', result);
+        
+        // Reset scanned state after browser is dismissed
+        setScanned(false);
       } catch (error) {
         console.error('Error opening URL:', error);
         Alert.alert('Error', 'Failed to open the URL', [
