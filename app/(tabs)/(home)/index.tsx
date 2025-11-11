@@ -60,7 +60,7 @@ export default function HomeScreen() {
           <Link href="/qrscanner" asChild>
             <Pressable style={styles.scanButton}>
               <IconSymbol name="camera" size={24} color={colors.card} style={{ marginRight: 12 }} />
-              <Text style={styles.scanButtonText}>Start Scanning</Text>
+              <Text style={styles.scanButtonText}>Chassis scannen</Text>
             </Pressable>
           </Link>
         </ScrollView>

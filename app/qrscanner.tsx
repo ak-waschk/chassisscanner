@@ -1,5 +1,5 @@
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { View, Text, StyleSheet, Pressable, Alert, Platform } from 'react-native';
 import { CameraView, useCameraPermissions } from 'expo-camera';
 import { Stack, router } from 'expo-router';
@@ -11,6 +11,7 @@ export default function QRScannerScreen() {
   const [permission, requestPermission] = useCameraPermissions();
   const [flashEnabled, setFlashEnabled] = useState(false);
   const [scanned, setScanned] = useState(false);
+  const scanCooldownRef = useRef(false);
 
   useEffect(() => {
     console.log('QR Scanner mounted');
@@ -18,12 +19,15 @@ export default function QRScannerScreen() {
   }, [permission]);
 
   const handleBarCodeScanned = async ({ type, data }: { type: string; data: string }) => {
-    if (scanned) {
+    // Prevent multiple scans
+    if (scanned || scanCooldownRef.current) {
+      console.log('Scan blocked - already processing or in cooldown');
       return;
     }
 
     console.log('QR Code scanned:', { type, data });
     setScanned(true);
+    scanCooldownRef.current = true;
 
     // Check if the scanned data is a valid URL
     const urlPattern = /^(https?:\/\/)/i;
@@ -44,19 +48,34 @@ export default function QRScannerScreen() {
         
         console.log('Browser result:', result);
         
-        // Reset scanned state after browser is dismissed
-        setScanned(false);
+        // Navigate back to home screen after browser is dismissed
+        router.replace('/');
       } catch (error) {
         console.error('Error opening URL:', error);
-        Alert.alert('Error', 'Failed to open the URL', [
-          { text: 'OK', onPress: () => setScanned(false) }
+        Alert.alert('Fehler', 'Die URL konnte nicht geöffnet werden', [
+          { 
+            text: 'OK', 
+            onPress: () => {
+              setScanned(false);
+              scanCooldownRef.current = false;
+            }
+          }
         ]);
       }
     } else {
       Alert.alert(
-        'Not a Website',
-        `Scanned data: ${data}\n\nThis QR code does not contain a website URL.`,
-        [{ text: 'OK', onPress: () => setScanned(false) }]
+        'Keine Website',
+        `Gescannte Daten: ${data}\n\nDieser QR-Code enthält keine Website-URL.`,
+        [{ 
+          text: 'OK', 
+          onPress: () => {
+            setScanned(false);
+            // Add a small cooldown before allowing next scan
+            setTimeout(() => {
+              scanCooldownRef.current = false;
+            }, 1000);
+          }
+        }]
       );
     }
   };
@@ -69,7 +88,7 @@ export default function QRScannerScreen() {
   if (!permission) {
     return (
       <View style={styles.container}>
-        <Text style={styles.message}>Requesting camera permission...</Text>
+        <Text style={styles.message}>Kamera-Berechtigung wird angefordert...</Text>
       </View>
     );
   }
@@ -86,12 +105,12 @@ export default function QRScannerScreen() {
         />
         <View style={styles.permissionContainer}>
           <IconSymbol name="camera" size={64} color={colors.primary} style={{ marginBottom: 20 }} />
-          <Text style={styles.permissionTitle}>Camera Permission Required</Text>
+          <Text style={styles.permissionTitle}>Kamera-Berechtigung erforderlich</Text>
           <Text style={styles.permissionMessage}>
-            We need access to your camera to scan QR codes.
+            Wir benötigen Zugriff auf Ihre Kamera, um QR-Codes zu scannen.
           </Text>
           <Pressable style={styles.permissionButton} onPress={requestPermission}>
-            <Text style={styles.permissionButtonText}>Grant Permission</Text>
+            <Text style={styles.permissionButtonText}>Berechtigung erteilen</Text>
           </Pressable>
         </View>
       </View>
@@ -133,7 +152,7 @@ export default function QRScannerScreen() {
           
           <View style={styles.bottomOverlay}>
             <Text style={styles.instructionText}>
-              Position the QR code within the frame
+              Positionieren Sie den QR-Code im Rahmen
             </Text>
             
             <Pressable
@@ -146,7 +165,7 @@ export default function QRScannerScreen() {
                 color={flashEnabled ? colors.primary : colors.card}
               />
               <Text style={[styles.flashButtonText, flashEnabled && styles.flashButtonTextActive]}>
-                {flashEnabled ? 'Flash On' : 'Flash Off'}
+                {flashEnabled ? 'Blitz An' : 'Blitz Aus'}
               </Text>
             </Pressable>
           </View>
@@ -189,7 +208,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: 40,
     height: 40,
-    borderColor: colors.secondary,
+    borderColor: colors.primary,
     borderWidth: 4,
   },
   topLeft: {
@@ -273,10 +292,11 @@ const styles = StyleSheet.create({
   },
   permissionMessage: {
     fontSize: 16,
-    color: colors.textSecondary,
+    color: colors.text,
     textAlign: 'center',
     marginBottom: 30,
     lineHeight: 24,
+    opacity: 0.7,
   },
   permissionButton: {
     backgroundColor: colors.primary,
