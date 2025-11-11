@@ -1,15 +1,15 @@
 
 {
   "expo": {
-    "name": "A&K Chassis-Scanner",
-    "slug": "A&K Chassis-Scanner",
+    "name": "A+K Chassis-Scanner",
+    "slug": "chassisscanner",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/32af286f-1d9f-4e23-a66b-df2a22a8530c.jpeg",
+    "icon": "./assets/images/a2099a9b-93ac-4c43-a8f2-510d1b548650.jpeg",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "splash": {
-      "image": "./assets/images/32af286f-1d9f-4e23-a66b-df2a22a8530c.jpeg",
+      "image": "./assets/images/a2099a9b-93ac-4c43-a8f2-510d1b548650.jpeg",
       "resizeMode": "contain",
       "backgroundColor": "#FFFFFF"
     },
@@ -22,14 +22,14 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/images/32af286f-1d9f-4e23-a66b-df2a22a8530c.jpeg",
+        "foregroundImage": "./assets/images/a2099a9b-93ac-4c43-a8f2-510d1b548650.jpeg",
         "backgroundColor": "#FFFFFF"
       },
       "edgeToEdgeEnabled": true,
-      "package": "com.anonymous.Natively"
+      "package": "com.addickskreye.chassiscanner"
     },
     "web": {
-      "favicon": "./assets/images/32af286f-1d9f-4e23-a66b-df2a22a8530c.jpeg",
+      "favicon": "./assets/images/a2099a9b-93ac-4c43-a8f2-510d1b548650.jpeg",
       "bundler": "metro"
     },
     "plugins": [
