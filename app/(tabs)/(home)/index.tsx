@@ -42,10 +42,7 @@ export default function HomeScreen() {
         />
       )}
       <View style={[styles.container, { backgroundColor: colors.background }]}>
-        <ScrollView
-          contentContainerStyle={styles.scrollContent}
-          showsVerticalScrollIndicator={false}
-        >
+        <View style={styles.contentContainer}>
           <View style={styles.heroSection}>
             <View style={styles.logoContainer}>
               <Image
@@ -54,16 +51,18 @@ export default function HomeScreen() {
                 resizeMode="contain"
               />
             </View>
-            <Text style={styles.title}>A&K Chassis-Scanner</Text>
+            <Text style={styles.title}>Chassis-Scanner</Text>
           </View>
 
-          <Link href="/qrscanner" asChild>
-            <Pressable style={styles.scanButton}>
-              <IconSymbol name="camera" size={24} color={colors.card} style={{ marginRight: 12 }} />
-              <Text style={styles.scanButtonText}>Chassis scannen</Text>
-            </Pressable>
-          </Link>
-        </ScrollView>
+          <View style={styles.buttonContainer}>
+            <Link href="/qrscanner" asChild>
+              <Pressable style={styles.scanButton}>
+                <IconSymbol name="camera" size={24} color={colors.card} style={{ marginRight: 12 }} />
+                <Text style={styles.scanButtonText}>Chassis scannen</Text>
+              </Pressable>
+            </Link>
+          </View>
+        </View>
       </View>
     </>
   );
@@ -73,15 +72,16 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  scrollContent: {
-    paddingVertical: 20,
+  contentContainer: {
+    flex: 1,
     paddingHorizontal: 20,
-    flexGrow: 1,
-    justifyContent: 'center',
+    paddingTop: 20,
+    paddingBottom: 40,
+    justifyContent: 'space-between',
   },
   heroSection: {
     alignItems: 'center',
-    marginBottom: 32,
+    paddingTop: 40,
   },
   logoContainer: {
     width: 200,
@@ -100,6 +100,10 @@ const styles = StyleSheet.create({
     color: colors.text,
     marginBottom: 12,
     textAlign: 'center',
+  },
+  buttonContainer: {
+    width: '100%',
+    paddingBottom: 20,
   },
   scanButton: {
     backgroundColor: colors.primary,
