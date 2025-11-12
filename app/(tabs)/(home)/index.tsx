@@ -5,9 +5,18 @@ import { ScrollView, Pressable, StyleSheet, View, Text, Platform, Image } from "
 import { IconSymbol } from "@/components/IconSymbol";
 import { useTheme } from "@react-navigation/native";
 import { colors } from "@/styles/commonStyles";
+import * as WebBrowser from 'expo-web-browser';
 
 export default function HomeScreen() {
   const theme = useTheme();
+
+  const handleNoQRCodePress = async () => {
+    try {
+      await WebBrowser.openBrowserAsync('https://chassis.addicks.xyz/find-chassis');
+    } catch (error) {
+      console.log('Error opening browser:', error);
+    }
+  };
 
   const renderHeaderRight = () => (
     <Pressable
@@ -55,6 +64,14 @@ export default function HomeScreen() {
           </View>
 
           <View style={styles.buttonContainer}>
+            <Pressable 
+              style={styles.noQRButton}
+              onPress={handleNoQRCodePress}
+            >
+              <IconSymbol name="search" size={24} color="#FFFFFF" style={{ marginRight: 12 }} />
+              <Text style={styles.noQRButtonText}>Kein QR-Code vorhanden</Text>
+            </Pressable>
+
             <Link href="/qrscanner" asChild>
               <Pressable style={styles.scanButton}>
                 <IconSymbol name="camera" size={24} color={colors.card} style={{ marginRight: 12 }} />
@@ -104,6 +121,23 @@ const styles = StyleSheet.create({
   buttonContainer: {
     width: '100%',
     paddingBottom: 20,
+    gap: 16,
+  },
+  noQRButton: {
+    backgroundColor: '#6B7280',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: 18,
+    paddingHorizontal: 32,
+    borderRadius: 12,
+    boxShadow: '0px 4px 12px rgba(107, 114, 128, 0.3)',
+    elevation: 5,
+  },
+  noQRButtonText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '700',
   },
   scanButton: {
     backgroundColor: colors.primary,
